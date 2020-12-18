@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/template/templategeral.xhtml">
+    <ui:define name="body">
+        <div style="border-width: 4px; border-color: #365e7d; border-style: solid; border-radius: 19px; width: 80%">
+
+            <h:form id="form">
+
+                <p:growl id="growl" showDetail="true" sticky="true" skipDetailIfEqualsSummary="true"/>
+
+                <!--<p:inputNumber id="NumberOne" value="#{testeControleMB.numero1}"/>
+                <p:inputNumber id="NumberTwo" value="#{testeControleMB.numero2}"/>
+
+                <br/>
+
+                <p:outputLabel value="Operação:" />
+                <p:selectOneRadio id="oper" value="#{testeControleMB.operacao}" unselectable="true">
+                    <f:selectItem itemLabel="+" itemValue="1" />
+                    <f:selectItem itemLabel="-" itemValue="2" />
+                    <f:selectItem itemLabel="x" itemValue="3" />
+                    <f:selectItem itemLabel="/" itemValue="4" />
+                </p:selectOneRadio>
+
+                <p:commandButton id="BotaoTeste" value="Aperte Aqui" action="#{testeControleMB.calcular()}"
+                                 update="form"/>
+
+                <br/>
+
+                <p:outputLabel id="TESTE" value="#{testeControleMB.resultado}"/>-->
+
+                <p:outputLabel value="Listagem pessoas: "/>
+
+                <p:dataTable id="tabela" var="pessoa" value="#{pessoaMB.listaPessoas}">
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{pessoa.id}"/>
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <h:outputText value="#{pessoa.nome}"/>
+                    </p:column>
+                    <p:column headerText="Nascimento">
+                        <h:outputText value="#{pessoa.nascimento}"/>
+                    </p:column>
+                    <p:column headerText="Altura">
+                        <h:outputText value="#{pessoa.altura}"/>
+                    </p:column>
+                    <p:column headerText="Peso">
+                        <h:outputText value="#{pessoa.peso}"/>
+                    </p:column>
+                    <p:column headerText="CPF">
+                        <h:outputText value="#{pessoa.CPF}"/>
+                    </p:column>
+                    <p:column headerText="RG">
+                        <h:outputText value="#{pessoa.RG}"/>
+                    </p:column>
+                    <p:column headerText="Sexo">
+                        <h:outputText value="#{pessoa.sexo}"/>
+                    </p:column>
+
+                    <p:column headerText="Confugiração">
+
+                        <!-- COMANDO DE EDITAR PESSOA NO BANCO DE DADOS -->
+                        <p:commandButton actionListener="#{pessoaMB.abrirDialogEditarPessoa(pessoa)}"
+                                         update="formEdtPessoa" id="iconOnlyEditar"
+                                         style="margin-right:40px;" icon="pi pi-pencil" title="Editar" />
+
+
+                        <!-- COMANDO DE DELETAR PESSOA DO BANCO DE DADOS -->
+                        <p:commandButton actionListener="#{pessoaMB.deletar(pessoa)}" id="iconOnlyDeletar"
+                                         style="margin-right:40px;" icon="pi pi-times-circle" title="Deletar"
+                                         update="form:tabela">
+                            <p:confirm message="Você realmente quer deletar?" />
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+                            </p:confirmDialog>
+
+                        </p:commandButton>
+
+                    </p:column>
+                </p:dataTable>
+
+                <br/>
+                <p:commandButton value="Cadastro" actionListener="#{pessoaMB.abrirDialogPessoa(pessoa)}"
+                                 update="dialogExtensao">
+                    <p:ajax update=""/></p:commandButton>
+                <br/>
+
+
+
+            </h:form>
+        </div>
+
+        <!-- Campo de digitação para inserir Pessoas no Banco de Dados -->
+        <p:dialog id="cadExtensao" header="Cadastro" widgetVar="dlg2" modal="true" height="350" width="400" closable="false">
+            <h:form id="formCadPessoa">
+                <p:growl id="growl1" showDetail="true"/>
+
+                <h:panelGrid id="cadInformacao" columns="3" cellpadding="0">
+                    <p:outputLabel for="cadNome" value="Nome:" indicateRequired="true"/>
+                    <p:inputText id="cadNome" maxlength="255" required="true"
+                                 value="#{pessoaMB.pessoaCadastro.nome}"/>
+                    <br/>
+
+                    <p:outputLabel for="cadNascimento" value="Nascimento:" indicateRequired="true"/>
+                    <p:datePicker id="cadNascimento" required="true"
+                                  value="#{pessoaMB.pessoaCadastro.nascimento}" readonlyInput="true"/>
+                    <br/>
+
+                    <p:outputLabel for="cadAltura" value="Altura:"/>
+                    <p:inputNumber id="cadAltura" value="#{pessoaMB.pessoaCadastro.altura}"/>
+                    <br/>
+
+                    <p:outputLabel for="cadPeso" value="Peso:"/>
+                    <p:inputNumber id="cadPeso" value="#{pessoaMB.pessoaCadastro.peso}"/>
+                    <br/>
+
+                    <p:outputLabel for="cadCPF" value="CPF:" indicateRequired="true"/>
+                    <p:inputMask id="cadCPF" required="true" maxlength="11" value="#{pessoaMB.pessoaCadastro.CPF}" mask="999.999.999-99"/>
+                    <br/>
+
+                    <p:outputLabel for="cadRG" value="RG:" indicateRequired="true"/>
+                    <p:inputMask id="cadRG" required="true" maxlength="8" value="#{pessoaMB.pessoaCadastro.RG}"  mask="9999999-9"/>
+                    <br/>
+
+                    <p:outputLabel for="cadSexo" value="Sexo:" indicateRequired="true"/>
+                    <p:selectOneRadio id="cadSexo" required="true"
+                                      value="#{pessoaMB.pessoaCadastro.sexo}" unselectable="true">
+                        <f:selectItem itemLabel="M" itemValue="M"/>
+                        <f:selectItem itemLabel="F" itemValue="F"/>
+                    </p:selectOneRadio>
+                    <br/>
+
+                </h:panelGrid>
+                <br/>
+
+                <p:commandButton id="cadConfirmar" value="Cadastrar" action="#{pessoaMB.salvarCadastro()}"
+                                 update="cadInformacao form:tabela"/>
+
+                <p:commandButton id="cadCancelar" value="Cancelar" immediate="true" action="#{pessoaMB.cancelar()}"/>
+
+            </h:form>
+        </p:dialog>
+
+        <!-- Campo de digitação da editar Pessoas no Banco de Dados -->
+        <p:dialog id="edtExtensao" header="Editar" widgetVar="dlgEdit" modal="true" height="350" width="400" closable="false">
+            <h:form id="formEdtPessoa">
+                <p:growl id="growl2" showDetail="true"/>
+
+                <h:panelGrid id="edtInformacao" columns="3" cellpadding="0">
+                    <p:outputLabel for="edtNome" value="Nome:" indicateRequired="true"/>
+                    <p:inputText id="edtNome" maxlength="255" required="true"
+                                 value="#{pessoaMB.pessoaEditar.nome}"/>
+                    <br/>
+
+                    <p:outputLabel for="edtNascimento" value="Nascimento:" indicateRequired="true"/>
+                    <p:datePicker id="edtNascimento" required="true"
+                                  value="#{pessoaMB.pessoaEditar.nascimento}" readonlyInput="true"/>
+                    <br/>
+
+                    <p:outputLabel for="edtAltura" value="Altura:"/>
+                    <p:inputNumber id="edtAltura" value="#{pessoaMB.pessoaEditar.altura}"/>
+                    <br/>
+
+                    <p:outputLabel for="edtPeso" value="Peso:"/>
+                    <p:inputNumber id="edtPeso" value="#{pessoaMB.pessoaEditar.peso}"/>
+                    <br/>
+
+                    <p:outputLabel for="edtCPF" value="CPF:" indicateRequired="true" rendered="false"/>
+                    <p:inputMask id="edtCPF" required="true" maxlength="11" rendered="false" value="#{pessoaMB.pessoaEditar.CPF}" mask="999.999.999-99"/>
+                    <br/>
+
+                    <p:outputLabel for="edtRG" value="RG:" indicateRequired="true" rendered="false"/>
+                    <p:inputMask id="edtRG" required="true" maxlength="8" rendered="false" value="#{pessoaMB.pessoaEditar.RG}"  mask="9999999-9"/>
+                    <br/>
+
+                    <p:outputLabel for="edtSexo" value="Sexo:" indicateRequired="true"/>
+                    <p:selectOneRadio id="edtSexo" required="true"
+                                      value="#{pessoaMB.pessoaEditar.sexo}" unselectable="true">
+                        <f:selectItem itemLabel="M" itemValue="M"/>
+                        <f:selectItem itemLabel="F" itemValue="F"/>
+                    </p:selectOneRadio>
+                    <br/>
+
+                </h:panelGrid>
+                <br/>
+
+                <p:commandButton id="edtConfirmar" value="Cadastrar" action="#{pessoaMB.salvarEdicao()}"
+                                 update="edtInformacao form:tabela"/>
+
+                <p:commandButton id="edtCancelar" value="Cancelar" immediate="true" action="#{pessoaMB.cancelar()}"/>
+
+            </h:form>
+        </p:dialog>
+
+        <!-- Campo de digitação para inserir e editar Pessoas no Banco de Dados -->
+        <p:dialog id="dialogExtensao"
+                  header="#{pessoaMB.(pessoa.getId() == null) ? Cadastrar : Editar}"
+                  widgetVar="dlgPessoa" modal="true" height="350" width="400" closable="false">
+            <h:form id="formPessoa">
+                <p:growl id="growlPessoa" showDetail="true"/>
+
+                <h:panelGrid id="Informacao" columns="3" cellpadding="0">
+                    <p:outputLabel for="Nome" value="Nome:" indicateRequired="true"/>
+                    <p:inputText id="Nome" maxlength="255" required="true"
+                                 value="#{pessoaMB.pessoaCadastro.nome}"/>
+                    <br/>
+
+                    <p:outputLabel for="Nascimento" value="Nascimento:" indicateRequired="true"/>
+                    <p:datePicker id="Nascimento" required="true"
+                                  value="#{pessoaMB.pessoaCadastro.nascimento}" readonlyInput="true"/>
+                    <br/>
+
+                    <p:outputLabel for="Altura" value="Altura:"/>
+                    <p:inputNumber id="Altura" value="#{pessoaMB.pessoaCadastro.altura}"/>
+                    <br/>
+
+                    <p:outputLabel for="Peso" value="Peso:"/>
+                    <p:inputNumber id="Peso" value="#{pessoaMB.pessoaCadastro.peso}"/>
+                    <br/>
+
+                    <p:outputLabel for="CPF" value="CPF:" indicateRequired="true"/>
+                    <p:inputMask id="CPF" required="true" maxlength="11" value="#{pessoaMB.pessoaCadastro.CPF}" mask="999.999.999-99"/>
+                    <br/>
+
+                    <p:outputLabel for="RG" value="RG:" indicateRequired="true"/>
+                    <p:inputMask id="RG" required="true" maxlength="8" value="#{pessoaMB.pessoaCadastro.RG}"  mask="9999999-9"/>
+                    <br/>
+
+                    <p:outputLabel for="Sexo" value="Sexo:" indicateRequired="true"/>
+                    <p:selectOneRadio id="Sexo" required="true"
+                                      value="#{pessoaMB.pessoaCadastro.sexo}" unselectable="true">
+                        <f:selectItem itemLabel="M" itemValue="M"/>
+                        <f:selectItem itemLabel="F" itemValue="F"/>
+                    </p:selectOneRadio>
+                    <br/>
+
+                </h:panelGrid>
+                <br/>
+
+                <p:commandButton id="Confirmar" value="#{pessoaMB.(pessoa.getId() == null) ? Cadastrar : Editar}"
+                                 action="#{pessoaMB.(pessoa.getId() == null) ? salvarCadastro() : salvarEdicao()}"
+                                 update="cadInformacao form:tabela"/>
+
+                <p:commandButton id="Cancelar" value="Cancelar" immediate="true" action="#{pessoaMB.cancelar()}"/>
+
+            </h:form>
+        </p:dialog>
+
+
+
+    </ui:define>
+</ui:composition>
+</html>
